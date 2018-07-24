@@ -1,51 +1,55 @@
 package estrutura;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import estado.Estado;
 import puzzle.Puzzle;
 
 public class Pilha {
 
-	private int tamanho;
-	private Estado[] estados;
+	private List<Estado> estados;
 	private int topo;
 	
-	public Pilha(int tamanho) {
-		this.tamanho = tamanho;
-		this.estados = new Estado[this.tamanho];
+	public Pilha() {
+		this.estados = new ArrayList<Estado>();
 		this.topo = -1;
 	}
 	
 	public void empilhar(Estado estado) {
-		if (!pilhaCheia()) {
-			this.estados[++topo] = estado;			
-		} else {
-			System.out.println("A pilha já está cheia");
-		}
+			++topo;
+			this.estados.add(estado);			
+		
 	}
 	
 	public Estado desempilhar() {
-		if (!pilhaVazia()) {			
-			return this.estados[topo--];
+		if (!pilhaVazia()) {
+			topo--;
+			return this.estados.remove(this.estados.size()-1);
 		}else {
 			System.out.println("A pilha já está vazia");
 		}
 		return null;
 	}
 	
-	public Estado getTopo() {
-		return this.estados[topo];
+	public Estado getTopo() {		
+		if(!pilhaVazia()){			
+			return this.estados.get(this.estados.size()-1);
+		}else{
+			System.out.println("A pilha já está vazia");
+			return null;
+		}
 	}
 	
 	private boolean pilhaVazia() {
 		return (topo == -1);
 	}
 	
-	private boolean pilhaCheia() {
-		return (topo == tamanho -1);
+	public int  getTamanho() {
+		return topo;
 	}
-	
 	public static void main(String args[]) {
-		Pilha pilha = new Pilha(5);
+		Pilha pilha = new Pilha();
 		pilha.empilhar(Puzzle.inicializaTabuleiro(new Estado(3)));
 		pilha.empilhar(Puzzle.inicializaTabuleiro(new Estado(4)));
 		pilha.empilhar(Puzzle.inicializaTabuleiro(new Estado(5)));
