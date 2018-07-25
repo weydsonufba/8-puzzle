@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import estrutura.Fila;
 import puzzle.Puzzle;
 
-public class Estado {
+public class Estado  implements Cloneable{
 
 	private int tamanho;
 	private int posicoes[][] ; 
@@ -20,7 +22,14 @@ public class Estado {
 	
 	
 	
-	
+	public Object clone() {
+		try {
+			return (Estado) super.clone();
+		} catch (CloneNotSupportedException e) {
+			System.out.println("Cloning not allowed.");
+            return this;
+		}
+	}
 	
 	public int[][] getPosicoes() {
 		return posicoes;
@@ -59,7 +68,7 @@ public class Estado {
 		Fila fila  = new Fila(); 
 		List<Estado> avaliados = new ArrayList<Estado>();
 		List<Estado> solucao = new ArrayList<Estado>();
-		Estado estadoCopia = new Estado(this);
+		Estado estadoCopia = ObjectUtils.clone(this);
 		Estado estado; 
 		
 		Estado nodo;
@@ -116,7 +125,7 @@ public class Estado {
 		int  valorg, valorf, valorh;
 		Integer i;
 		Estado filho = new Estado(pai.tamanho);
-		Estado estado = new Estado(pai);
+		Estado estado = ObjectUtils.clone(pai);
 		estado.setObj(pai.getObj());
 		Puzzle.trocaPeca(estado, origemI, origemJ, destinoI, destinoJ);
 		if (procuraLista(fila, estado) != null) {

@@ -1,5 +1,7 @@
 package puzzle;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import estado.Estado;
 
 public class Puzzle {
@@ -7,9 +9,9 @@ public class Puzzle {
 	
 	public static void main(String args[]) {
 		Estado estado = inicializaTabuleiro (new Estado(3));
-		
+		estado.setObj(ObjectUtils.clone(estado));
 		embaralhaTabuleiro(estado,50,"");
-		estado.setObj(inicializaTabuleiro (new Estado(3)));
+		
 		estado.buscaSolucao();
 		
 	}
