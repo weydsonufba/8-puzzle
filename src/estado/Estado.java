@@ -10,7 +10,7 @@ import puzzle.Puzzle;
 public class Estado {
 
 	private int tamanho;
-	public int posicoes[][] ; 
+	private int posicoes[][] ; 
 	public int profundidade;
 	public Estado pai;
 	public int valorRf;
@@ -22,6 +22,12 @@ public class Estado {
 	
 	
 	
+	public int[][] getPosicoes() {
+		return posicoes;
+	}
+	public void setPosicoes(int[][] posicoes) {
+		this.posicoes = posicoes;
+	}
 	public Estado(int tamanho) {
 		this.tamanho = tamanho;
 		this.posicoes = new int[this.tamanho][this.tamanho];

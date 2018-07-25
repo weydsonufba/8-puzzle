@@ -16,8 +16,14 @@ public class Puzzle {
 	public static Estado inicializaTabuleiro(Estado estado) {
 		int i = 0,j = 0,  c=1;
 		for ( i = 0; i < estado.getTamanho(); i++) {
-			for ( j = 0; j < estado.getTamanho(); j++) {						
-					estado.posicoes[i][j] = c++;
+			for ( j = 0; j < estado.getTamanho(); j++) {
+				if (i == 2 && j== 2) {					
+					estado.getPosicoes()[i][j] = 0;
+				} else {
+					estado.getPosicoes()[i][j] = c++;
+					
+				}
+					
 		
 			}
 		}
@@ -31,7 +37,7 @@ public class Puzzle {
 		if (qtdIteracoes > 0) {
 			for (i = 0; i < 3; i++) {
 				for (j = 0; j < 3; j++) {
-					if (estado.posicoes[i][j] == 9) {
+					if (estado.getPosicoes()[i][j] == 0) {
 						posi = i;
 						posj = j;
 						break;
@@ -81,9 +87,9 @@ public class Puzzle {
 	}
 	
 	public static void trocaPeca(Estado estado,int origemI,int origemJ,int destinoI,int destinoJ) {
-		int t = estado.posicoes[destinoI][destinoJ];
-		estado.posicoes[destinoI][destinoJ] = estado.posicoes[origemI][origemJ];
-		estado.posicoes[origemI][origemJ] = t;
+		int t = estado.getPosicoes()[destinoI][destinoJ];
+		estado.getPosicoes()[destinoI][destinoJ] = estado.getPosicoes()[origemI][origemJ];
+		estado.getPosicoes()[origemI][origemJ] = t;
 	}
 
 	public static void exibeEstado(Estado estado) { // exibe estado no console
@@ -92,7 +98,7 @@ public class Puzzle {
 				if(j == 0) {
 					System.out.println();
 				}
-				System.out.print(estado.posicoes[i][j]+ " ");
+				System.out.print(estado.getPosicoes()[i][j]+ " ");
 			}
 		}
 	}
