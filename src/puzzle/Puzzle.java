@@ -7,8 +7,9 @@ public class Puzzle {
 	
 	public static void main(String args[]) {
 		Estado estado = inicializaTabuleiro (new Estado(3));
-		estado.setObj(estado);
+		
 		embaralhaTabuleiro(estado,50,"");
+		estado.setObj(inicializaTabuleiro (new Estado(3)));
 		estado.buscaSolucao();
 		
 	}

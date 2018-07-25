@@ -43,7 +43,7 @@ public class Solver {
 
         SearchNode min = PQ.delMin();
         SearchNode twinMin = twinPQ.delMin();
-
+        int i =0;
         while(!min.board.isGoal() && !twinMin.board.isGoal()) {
 
             for (Board b : min.board.neighbors()) {      
@@ -63,7 +63,8 @@ public class Solver {
                     twinPQ.insert(n);
                     }
             }
-             
+            
+             System.out.println(i++);
              min = PQ.delMin();
              twinMin = twinPQ.delMin();
          }

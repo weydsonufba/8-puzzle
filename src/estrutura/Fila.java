@@ -56,6 +56,17 @@ public class Fila {
 	public void setNumeroElementos(int numeroElementos) {
 		this.numeroElementos = numeroElementos;
 	}
+	public int getSize() {
+		return this.estados.size();
+	}
+
+	public List<Estado> getEstados() {
+		return estados;
+	}
+
+	public void setEstados(List<Estado> estados) {
+		this.estados = estados;
+	}
 
 	public static void main(String args[]) {
 		Fila fila = new Fila();

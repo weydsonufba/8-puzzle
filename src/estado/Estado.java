@@ -67,7 +67,7 @@ public class Estado {
 		this.valorRh = calculaHeuristica(this);
 		this.valorRf = this.valorRh;
 		fila.enfileirar(this);
-		
+		int i = 0;
 		while (!fila.filaVazia()) {
 			nodo = fila.desenfileirar();
 			// nodos++
@@ -84,26 +84,27 @@ public class Estado {
 				return;
 			} else {
 				if (profundidade < profundMax) {
-					geraFilhos(nodo, avaliados);
+					geraFilhos(nodo, avaliados, fila);
+					System.out.println(i++);
 				}
 			}
 		}
 }
 	
-	private void geraFilhos(Estado nodo, List avaliados ) {
+	private void geraFilhos(Estado nodo, List avaliados, Fila fila ) {
 		this.profundidade++;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				if (nodo.posicoes[i][j] == 9) { // localiza o espa�o em branco
+				if (nodo.posicoes[i][j] == 0) { // localiza o espa�o em branco
 					// gera os filhos poss�veis e coloca na pilha
 					if (i > 0)
-						empilhaFilho(nodo, i, j, i - 1, j, avaliados); 
+						empilhaFilho(nodo, i, j, i - 1, j, fila); 
 					if (i < 2)
-						empilhaFilho(nodo, i, j, i + 1, j, avaliados); 
+						empilhaFilho(nodo, i, j, i + 1, j, fila); 
 					if (j > 0)
-						empilhaFilho(nodo, i, j, i, j - 1, avaliados); 
+						empilhaFilho(nodo, i, j, i, j - 1, fila); 
 					if (j < 2)
-						empilhaFilho(nodo, i, j, i, j + 1, avaliados);
+						empilhaFilho(nodo, i, j, i, j + 1, fila);
 					return; 
 				} // end
 			}
@@ -111,13 +112,14 @@ public class Estado {
 	}
 	
 	
-	private void empilhaFilho(Estado pai, int origemI, int origemJ, int destinoI, int destinoJ, List<Estado> avaliados){
+	private void empilhaFilho(Estado pai, int origemI, int origemJ, int destinoI, int destinoJ, Fila fila){
 		int  valorg, valorf, valorh;
 		Integer i;
 		Estado filho = new Estado(pai.tamanho);
 		Estado estado = new Estado(pai);
+		estado.setObj(pai.getObj());
 		Puzzle.trocaPeca(estado, origemI, origemJ, destinoI, destinoJ);
-		if (procuraLista(avaliados, estado) != null) {
+		if (procuraLista(fila, estado) != null) {
 			return;
 		}
 		valorg = pai.valorG + 1;
@@ -130,25 +132,38 @@ public class Estado {
 		filho.valorRf  = valorf;
 		filho.valorG = valorg;
 		filho.valorRh = valorh;
-		i = procuraLista(avaliados, estado);
+		filho.setObj(estado.getObj());
+		i = procuraLista(fila, estado);
 		if (i != null) {
-			if (avaliados.get(i).valorG <= valorg) {
+			if (fila.getEstados().get(i).valorG <= valorg) {
 				return;
 			}else {
 				if(i > 0) {					
-					avaliados.remove(i -1); // ver
+					fila.getEstados().remove(i -1); // ver // TODO
 				}else {
-					avaliados.remove(i);
+					fila.getEstados().remove(i);
 				}
 			}
 		}
+		insereFilaPrioridade(filho,fila);
 	}
 	
+	private void insereFilaPrioridade(Estado filho, Fila fila) {
+		int i = 0;
+
+		while (i < fila.getSize() && filho.valorRf > fila.getEstados().get(i).valorRf) {			
+			i++;
+		}
+		if (i >= fila.getSize())
+			fila.enfileirar(filho);		// insere no fim
+		else
+			fila.getEstados().add(i, filho);	// insere na posição i rever //TODO
+	}
 	
-	private Integer procuraLista(List<Estado> lista,Estado estado) {
+	private Integer procuraLista(Fila fila,Estado estado) {
 		
-		for (int i=0; i < lista.size(); i++) {
-			if (comparaEstados(estado, lista.get(i)))
+		for (int i=0; i < fila.getSize(); i++) {
+			if (comparaEstados(estado, fila.getEstados().get(i)))
 				return i;
 		}
 		return null;
@@ -182,7 +197,7 @@ public class Estado {
 		n = 0;
 		for (y=0; y<3; y++) {
 			for(x=0; x<3; x++) {
-				if (estado.posicoes[y][x] != estado.obj.posicoes[y][x] && estado.posicoes[y][x] != 9) { // verifica peças fora do lugar, sem contar o espaço em branco
+				if (estado.posicoes[y][x] != estado.obj.posicoes[y][x] && estado.posicoes[y][x] != 0) { // verifica peças fora do lugar, sem contar o espaço em branco
 																								 //	calcula distância total das peças de suas posições corretas
 					py = (estado.posicoes[y][x]-1)/3;	// calcula linha correta, baseado no valor da peça
 					px = estado.posicoes[y][x]-py*3-1;			// calcula coluna correta
