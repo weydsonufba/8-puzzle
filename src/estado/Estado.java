@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import estrutura.Fila;
 import puzzle.Puzzle;
@@ -98,7 +99,7 @@ public class Estado  implements Cloneable{
 			estado = nodo;
 			profund = nodo.profundidade;
 			if (comparaEstados(estado, this.obj)) {
-				tempoFim =  new Date().getTime() - tempoInicio;
+				calculaTempo(tempoInicio);
 				solucao.add(nodo);
 				while (nodo.pai != null) {
 					nodo = nodo.pai;
@@ -168,7 +169,7 @@ public class Estado  implements Cloneable{
 				return;
 			}else {
 				if(i > 0) {					
-					fila.getEstados().remove(i -1); // ver // TODO
+					fila.getEstados().remove(i -1); // ver 
 				}else {
 					fila.getEstados().remove(i);
 				}
@@ -186,7 +187,7 @@ public class Estado  implements Cloneable{
 		if (i >= fila.getSize())
 			fila.enfileirar(filho);		// insere no fim
 		else
-			fila.getEstados().add(i, filho);	// insere na posição i rever //TODO
+			fila.getEstados().add(i, filho);	// insere na posição i 
 	}
 	
 	private Integer procuraLista(Fila fila,Estado estado) {
@@ -199,16 +200,18 @@ public class Estado  implements Cloneable{
 			
 	}
 	
-//	private void calculaTempo(Long tempoInicio) {
-//		Long tempo = new Date().getTime() - tempoInicio;	// calcula tempo transcorrido
-//		int tms =  (tempo%1000,3);
-//		tempo = (long) Math.floor(tempo/1000);
-//		int tseg = pad(tempo%60,2);
-//		tempo = Math.floor(tempo/60);
-//		int tmin = pad(tempo%60,2);
-//		tempo = Math.floor(tempo/60);
-//		System.out.println(tempo + ":"+tmin +":"+tseg + "."+tms);
-//	}
+	private void calculaTempo(Long tempoInicio) {
+		Long tempo = new Date().getTime() - tempoInicio;	// calcula tempo transcorrido
+		int tms =  Integer.parseInt(StringUtils.leftPad(String.valueOf(tempo%1000), 3,"0"));
+		tempo = (long) Math.floor(tempo/1000);
+		
+		int tseg = Integer.parseInt(StringUtils.leftPad(String.valueOf(tempo%60), 2,"0"));
+		tempo = (long) Math.floor(tempo/60);
+		int tmin = Integer.parseInt(StringUtils.leftPad(String.valueOf(tempo%60), 2,"0"));
+		tempo = (long) Math.floor(tempo/60);
+		System.out.print("Tempo percorrido: ");
+		System.out.println(tempo + ":"+tmin +":"+tseg + "."+tms);
+	}
 	
 	public boolean comparaEstados(Estado estado, Estado obj){
 		for (int i=0; i<3; i++){
