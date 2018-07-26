@@ -12,6 +12,11 @@ public class Puzzle {
 	
 	public static void main(String args[]) {
 		//int teste[][] = {{5,4,3}, {7,2,6}, {0,1,8}};
+		//int teste[][] = {{4,7,1}, {8,0,6}, {3,2,5}};
+		//int teste[][] = {{2,8,3}, {4,0,7}, {5,6,1}};
+		//int teste[][] = {{4,2,6}, {1,5,7}, {8,3,0}};
+		//int teste[][] = {{8,1,0}, {7,5,2}, {3,6,4}};
+		//int teste[][] = {{8,7,1}, {4,0,5}, {6,3,2}};
 		Estado estado = inicializaTabuleiro (new Estado(3));
 		estado.setObj(ObjectUtils.clone(estado));
 		//estado.setPosicoes(teste );
