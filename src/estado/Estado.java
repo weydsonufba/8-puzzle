@@ -155,8 +155,8 @@ public class Estado  implements Cloneable{
 		valorh = calculaHeuristica(estado);
 		valorf = valorg + valorh;
 		
-		filho.posicoes = clonePosicoes(estado);	
-		filho.profundidade = profund;
+		filho.posicoes = clonePosicoes(estado);
+	    filho.profundidade = profund;
 		filho.pai = pai;
 		filho.valorRf  = valorf;
 		filho.valorG = valorg;

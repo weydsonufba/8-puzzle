@@ -36,7 +36,7 @@ public class Fila {
 			this.numeroElementos--;
 			return temp;
 		}else {
-			System.out.println("A fila j√° est√° vazia");
+			System.out.println("A fila j· est· vazia");
 		}
 		return null;
 	}

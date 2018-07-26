@@ -1,5 +1,6 @@
 package puzzle;
 
+
 import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -111,6 +112,7 @@ public class Puzzle {
 		}
 	}
 	public static void exibeSolucao(List<Estado> list){
+
 		for (int i = list.size()-1; i >= 0 ; i--) {
 			System.out.println();
 			System.out.println("----Estado:----");
