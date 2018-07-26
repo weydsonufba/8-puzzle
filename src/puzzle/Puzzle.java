@@ -1,5 +1,8 @@
 package puzzle;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.lang3.ObjectUtils;
 
 import estado.Estado;
@@ -103,6 +106,12 @@ public class Puzzle {
 				}
 				System.out.print(estado.getPosicoes()[i][j]+ " ");
 			}
+		}
+	}
+	public static void exibeSolucao(List<Estado> list){
+		for (int i = list.size()-1; i > 0 ; i--) {
+			System.out.println("----Estado:----");
+			exibeEstado(list.get(i));
 		}
 	}
 	

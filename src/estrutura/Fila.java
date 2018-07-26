@@ -21,7 +21,7 @@ public class Fila {
 	
 	public void enfileirar(Estado estado) {
 			++fim;
-			if(!this.filaVazia()) {				
+			if(!estados.isEmpty()) {				
 				estado.pai = this.estados.get(this.estados.size()-1);
 			}
 			this.estados.add(estado);
@@ -29,7 +29,7 @@ public class Fila {
 	}
 	
 	public Estado desenfileirar() {
-		if (!filaVazia()) {
+		if (!estados.isEmpty()) {
 			this.inicio++;
 			Estado temp = this.estados.remove(0);
 			
@@ -46,7 +46,7 @@ public class Fila {
 	}
 	
 	public boolean filaVazia() {
-		return (numeroElementos == 0);
+		return estados.isEmpty();
 	}
 	
 	public int getNumeroElementos() {

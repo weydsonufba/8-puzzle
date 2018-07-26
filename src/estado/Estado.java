@@ -24,11 +24,22 @@ public class Estado  implements Cloneable{
 	
 	public Object clone() {
 		try {
-			return (Estado) super.clone();
+		 Estado clone =	(Estado) super.clone();
+		 clone.setPosicoes(clonePosicoes(this));
+		 //System.arraycopy(this.getPosicoes(), 0, clone.getPosicoes(), 0, this.tamanho);
+			return clone;
 		} catch (CloneNotSupportedException e) {
 			System.out.println("Cloning not allowed.");
             return this;
 		}
+	}
+	
+	public int[][] clonePosicoes(Estado estado) {
+		int[][] clPosicoes = new int[estado.tamanho][estado.tamanho];
+		for(int i=0; i < estado.tamanho; i++) 
+			for (int j=0; j < estado.tamanho; j++ )
+				clPosicoes[i][j] = estado.posicoes[i][j];
+		return clPosicoes;
 	}
 	
 	public int[][] getPosicoes() {
@@ -64,7 +75,7 @@ public class Estado  implements Cloneable{
 		this.obj = obj;
 	}
 	public void buscaSolucao(){
-		int profundMax = 30;
+		int profundMax = 5000;
 		Fila fila  = new Fila(); 
 		List<Estado> avaliados = new ArrayList<Estado>();
 		List<Estado> solucao = new ArrayList<Estado>();
@@ -90,6 +101,7 @@ public class Estado  implements Cloneable{
 				}
 				estado = solucao.remove(solucao.size() - 1);
 				Puzzle.exibeEstado(estado);
+				Puzzle.exibeSolucao(solucao);
 				return;
 			} else {
 				if (profundidade < profundMax) {
@@ -135,8 +147,8 @@ public class Estado  implements Cloneable{
 		valorh = calculaHeuristica(estado);
 		valorf = valorg + valorh;
 		
-		filho.posicoes = estado.posicoes;
-		filho.profundidade = estado.profundidade;
+		filho.posicoes = clonePosicoes(estado);	
+		filho.profundidade = this.profundidade;
 		filho.pai = pai;
 		filho.valorRf  = valorf;
 		filho.valorG = valorg;
