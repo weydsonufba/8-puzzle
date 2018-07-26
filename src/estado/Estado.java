@@ -24,11 +24,22 @@ public class Estado  implements Cloneable{
 	
 	public Object clone() {
 		try {
-			return (Estado) super.clone();
+		 Estado clone =	(Estado) super.clone();
+		 clone.setPosicoes(clonePosicoes(this));
+		 //System.arraycopy(this.getPosicoes(), 0, clone.getPosicoes(), 0, this.tamanho);
+			return clone;
 		} catch (CloneNotSupportedException e) {
 			System.out.println("Cloning not allowed.");
             return this;
 		}
+	}
+	
+	public int[][] clonePosicoes(Estado estado) {
+		int[][] clPosicoes = new int[estado.tamanho][estado.tamanho];
+		for(int i=0; i < estado.tamanho; i++) 
+			for (int j=0; j < estado.tamanho; j++ )
+				clPosicoes[i][j] = estado.posicoes[i][j];
+		return clPosicoes;
 	}
 	
 	public int[][] getPosicoes() {
@@ -64,6 +75,8 @@ public class Estado  implements Cloneable{
 		this.obj = obj;
 	}
 	public void buscaSolucao(){
+		int profund = 0;
+		int nodos = 0;
 		int profundMax = 30;
 		Fila fila  = new Fila(); 
 		List<Estado> avaliados = new ArrayList<Estado>();
@@ -73,47 +86,54 @@ public class Estado  implements Cloneable{
 		
 		Estado nodo;
 		Long tempoInicio = new Date().getTime();
+		Long tempoFim;
 		this.valorRh = calculaHeuristica(this);
 		this.valorRf = this.valorRh;
 		fila.enfileirar(this);
 		int i = 0;
 		while (!fila.filaVazia()) {
 			nodo = fila.desenfileirar();
-			// nodos++
+			 nodos++;
 			avaliados.add(nodo); // coloca nodo na lista de nodos j√° avaliados
 			estado = nodo;
+			profund = nodo.profundidade;
 			if (comparaEstados(estado, this.obj)) {
+				tempoFim =  new Date().getTime() - tempoInicio;
 				solucao.add(nodo);
 				while (nodo.pai != null) {
 					nodo = nodo.pai;
 					solucao.add(nodo);
 				}
 				estado = solucao.remove(solucao.size() - 1);
+				System.out.println("profundidade: "+profund);
+				System.out.println("NÛs testados: "+nodos);
 				Puzzle.exibeEstado(estado);
+				Puzzle.exibeSolucao(solucao);
 				return;
 			} else {
-				if (profundidade < profundMax) {
-					geraFilhos(nodo, avaliados, fila);
-					System.out.println(i++);
+				if (profund < profundMax) {
+					geraFilhos(nodo,profund, avaliados, fila);
+					
+//					System.out.println(i++);
 				}
 			}
 		}
 }
 	
-	private void geraFilhos(Estado nodo, List avaliados, Fila fila ) {
-		this.profundidade++;
+	private void geraFilhos(Estado nodo,int profund, List avaliados, Fila fila ) {
+		profund++;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (nodo.posicoes[i][j] == 0) { // localiza o espaÔøΩo em branco
 					// gera os filhos possÔøΩveis e coloca na pilha
 					if (i > 0)
-						empilhaFilho(nodo, i, j, i - 1, j, fila); 
+						empilhaFilho(nodo,profund, i, j, i - 1, j, fila); 
 					if (i < 2)
-						empilhaFilho(nodo, i, j, i + 1, j, fila); 
+						empilhaFilho(nodo,profund, i, j, i + 1, j, fila); 
 					if (j > 0)
-						empilhaFilho(nodo, i, j, i, j - 1, fila); 
+						empilhaFilho(nodo,profund, i, j, i, j - 1, fila); 
 					if (j < 2)
-						empilhaFilho(nodo, i, j, i, j + 1, fila);
+						empilhaFilho(nodo,profund, i, j, i, j + 1, fila);
 					return; 
 				} // end
 			}
@@ -121,7 +141,7 @@ public class Estado  implements Cloneable{
 	}
 	
 	
-	private void empilhaFilho(Estado pai, int origemI, int origemJ, int destinoI, int destinoJ, Fila fila){
+	private void empilhaFilho(Estado pai,int profund, int origemI, int origemJ, int destinoI, int destinoJ, Fila fila){
 		int  valorg, valorf, valorh;
 		Integer i;
 		Estado filho = new Estado(pai.tamanho);
@@ -135,8 +155,8 @@ public class Estado  implements Cloneable{
 		valorh = calculaHeuristica(estado);
 		valorf = valorg + valorh;
 		
-		filho.posicoes = estado.posicoes;
-		filho.profundidade = estado.profundidade;
+		filho.posicoes = clonePosicoes(estado);	
+		filho.profundidade = profund;
 		filho.pai = pai;
 		filho.valorRf  = valorf;
 		filho.valorG = valorg;
@@ -182,7 +202,7 @@ public class Estado  implements Cloneable{
 //	private void calculaTempo(Long tempoInicio) {
 //		Long tempo = new Date().getTime() - tempoInicio;	// calcula tempo transcorrido
 //		int tms =  (tempo%1000,3);
-//		tempo = Math.floor(tempo/1000);
+//		tempo = (long) Math.floor(tempo/1000);
 //		int tseg = pad(tempo%60,2);
 //		tempo = Math.floor(tempo/60);
 //		int tmin = pad(tempo%60,2);

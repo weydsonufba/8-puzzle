@@ -1,5 +1,7 @@
 package puzzle;
 
+import java.util.List;
+
 import org.apache.commons.lang3.ObjectUtils;
 
 import estado.Estado;
@@ -8,8 +10,10 @@ public class Puzzle {
 
 	
 	public static void main(String args[]) {
+		//int teste[][] = {{5,4,3}, {7,2,6}, {0,1,8}};
 		Estado estado = inicializaTabuleiro (new Estado(3));
 		estado.setObj(ObjectUtils.clone(estado));
+		//estado.setPosicoes(teste );
 		embaralhaTabuleiro(estado,50,"");
 		
 		estado.buscaSolucao();
@@ -84,8 +88,9 @@ public class Puzzle {
 			}	
 			qtdIteracoes--;
 			embaralhaTabuleiro(estado, qtdIteracoes, ultimo);
-		}else {			
+		}else {	
 			exibeEstado(estado);
+			System.out.println();
 		}
 	}
 	
@@ -103,6 +108,13 @@ public class Puzzle {
 				}
 				System.out.print(estado.getPosicoes()[i][j]+ " ");
 			}
+		}
+	}
+	public static void exibeSolucao(List<Estado> list){
+		for (int i = list.size()-1; i >= 0 ; i--) {
+			System.out.println();
+			System.out.println("----Estado:----");
+			exibeEstado(list.get(i));
 		}
 	}
 	
