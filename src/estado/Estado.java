@@ -107,7 +107,7 @@ public class Estado  implements Cloneable{
 				}
 				estado = solucao.remove(solucao.size() - 1);
 				System.out.println("profundidade: "+profund);
-				System.out.println("Nós testados: "+nodos);
+				System.out.println("Nï¿½s testados: "+nodos);
 				Puzzle.exibeEstado(estado);
 				Puzzle.exibeSolucao(solucao);
 				return;
@@ -169,7 +169,7 @@ public class Estado  implements Cloneable{
 				return;
 			}else {
 				if(i > 0) {					
-					fila.getEstados().remove(i -1); // ver 
+					fila.getEstados().remove(i-1); 
 				}else {
 					fila.getEstados().remove(i);
 				}

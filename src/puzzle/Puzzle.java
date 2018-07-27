@@ -12,15 +12,13 @@ public class Puzzle {
 	
 	public static void main(String args[]) {
 		//int teste[][] = {{5,4,3}, {7,2,6}, {0,1,8}};
-		//int teste[][] = {{4,7,1}, {8,0,6}, {3,2,5}};
 		//int teste[][] = {{2,8,3}, {4,0,7}, {5,6,1}};
 		//int teste[][] = {{4,2,6}, {1,5,7}, {8,3,0}};
-		//int teste[][] = {{8,1,0}, {7,5,2}, {3,6,4}};
-		//int teste[][] = {{8,7,1}, {4,0,5}, {6,3,2}};
+		int teste[][] = {{8,7,0}, {6,5,4}, {3,2,1}};
 		Estado estado = inicializaTabuleiro (new Estado(3));
 		estado.setObj(ObjectUtils.clone(estado));
-		//estado.setPosicoes(teste );
-		embaralhaTabuleiro(estado,50,"");
+		estado.setPosicoes(teste );
+		//embaralhaTabuleiro(estado,200,"");
 		
 		estado.buscaSolucao();
 		
@@ -64,7 +62,7 @@ public class Puzzle {
 				switch (movimentoAleatorio) {
 				case 0:
 					if (posi > 0 && ultimo != "b") { // testa se pode mover para cima
-						trocaPeca(estado, posi, posj, posi - 1, posi);
+						trocaPeca(estado, posi, posj, posi - 1, posj);
 						ultimo = "c";
 						moveu = true;
 					}
